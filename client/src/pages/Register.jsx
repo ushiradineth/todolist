@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { register, reset } from '../features/auth/authSlice'
 import { FaUser } from 'react-icons/fa'
+import Spinner from '../components/Spinner'
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,6 +16,23 @@ function Register() {
 
   const { name, email, password, password2 } = formData
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth) 
+
+  useEffect(()=> {
+    if(isError){
+      toast.error(message)
+    }
+
+    if(isSuccess || user){
+      navigate('/')
+    }
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch]) 
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -20,7 +42,23 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault()
+
+    if(password !== password2){
+      toast.error('Passwords do not match')
+    } else {
+      const userData = {
+        name,
+        email,
+        password
+      }
+
+      dispatch(register(userData))
+    }
   } 
+
+  if(isLoading){
+    return <Spinner />
+  }
 
   let inputCSS = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline"
 
@@ -37,7 +75,7 @@ function Register() {
           <input type="text" name="name" id="name" value={name} placeholder='Name' className={inputCSS} onChange={onChange} />
           <input type="email" name="email" id="email" value={email} placeholder='Email' className={inputCSS} onChange={onChange} />
           <input type="password" name="password" id="password" value={password} placeholder='Password' className={inputCSS} onChange={onChange} />
-          <input type="password2" name="password2" id="password2" value={password2} placeholder='Confirm password' className={inputCSS} onChange={onChange} />
+          <input type="password" name="password2" id="password2" value={password2} placeholder='Confirm password' className={inputCSS} onChange={onChange} />
           <button type="submit" className="bg-blue-500 text-white font-bold w-full py-3 px-3 rounded focus:outline-none focus:shadow-outline">Submit</button>
         </form>
       </section>
