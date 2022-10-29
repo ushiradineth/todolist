@@ -1,17 +1,14 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { logout, reset } from '../features/auth/authSlice'
+import React from 'react';
 
 function Header() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.auth)
 
-  const onLogout = () => {
-    dispatch(logout())
-    dispatch(reset())
-    navigate('/')
+  function onLogout(){
+    localStorage.removeItem('token')
+    localStorage.removeItem('userid')
+    navigate('/login')
   }
 
   return (
@@ -24,7 +21,7 @@ function Header() {
         </Link>
       </div>
       <ul className='flex items-center justify-between ml-[20px]'>
-        {user ? (
+        {localStorage.getItem('token') ? <>
           <li className='ml-[20px]'>
             <button onClick={onLogout}>
               <div className='pl-5'><FaSignOutAlt /></div>
@@ -33,7 +30,7 @@ function Header() {
               </h1>
             </button>
           </li>
-        ) : (<>
+          </> : <>
           <li className='ml-[20px]'>
             <Link to='/login'>
               <div className='pl-2'><FaSignInAlt /></div>
@@ -50,7 +47,7 @@ function Header() {
               </h1>
             </Link>
           </li>
-        </>)}
+        </>}
       </ul>
     </header>
   )

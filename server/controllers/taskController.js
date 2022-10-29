@@ -10,7 +10,7 @@ const getTask =  asyncHandler(async (req, res) => {
     res.status(200).json(tasks)
 })
 
-// @desc Set gotaskal
+// @desc Set task
 // @route POST /api/task
 // @access Private
 const setTask = asyncHandler(async (req, res) => {
@@ -18,11 +18,15 @@ const setTask = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Please add a text field')
     }
-
-    const task = await Task.create({
-        text: req.body.text,
-        user: req.user.id
-    })
+    
+    try {
+        const task = await Task.create({
+            text: req.body.text,
+            user: req.body.user
+        })
+    } catch (error) {
+        console.log(error)
+    }
 
     res.status(200).json(task)
 })

@@ -1,35 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { FaSignInAlt } from 'react-icons/fa'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { login, reset } from '../features/auth/authSlice'
-import Spinner from '../components/Spinner'
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
+  if(localStorage.getItem('token')){
+    navigate('/')
+    return (<></>)
+  }
+  
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   })
 
   const { email, password } = formData
-
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth) 
-
-  useEffect(()=> {
-    if(isError){
-      toast.error(message)
-    }
-
-    if(isSuccess || user){
-      navigate('/')
-    }
-
-    dispatch(reset())
-  }, [user, isError, isSuccess, message, navigate, dispatch]) 
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -46,11 +34,26 @@ function Login() {
       password
     }
 
-    dispatch(login(userData))
-  }
-
-  if(isLoading){
-    return <Spinner />
+    axios.post('http://localhost:8000/api/users/login', userData)
+    .then(function (response) {
+      localStorage.setItem('token', JSON.stringify(response.data.token));
+      localStorage.setItem('userid', JSON.stringify(response.data._id));
+      navigate('/')
+    })
+    .catch(function (error) {
+      if(error.response.data.message){
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    })
   }
 
   let inputCSS = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline"
