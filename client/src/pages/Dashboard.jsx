@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify'
 import { FaTrash } from 'react-icons/fa'
@@ -60,9 +61,13 @@ function Dashboard() {
     }
   }
 
-  //for refreshing the task list
+  //for refreshing the task list and path restrictions
+  const navigate = useNavigate()
   let isFirst = true
   useEffect(() => {
+    if(!localStorage.getItem('token'))
+      navigate('/login')
+
     if(isFirst){
       isFirst = false
       return

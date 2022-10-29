@@ -1,4 +1,4 @@
-import { Navigate, BrowserRouter as Router, Routes, Route  } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route  } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -17,7 +17,6 @@ function App() {
             <Route path='/' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            <Route path="" element={localStorage.getItem('token') ? <Navigate to ="/register" /> : <Navigate to ="/Login"/>}/>
           </Routes>          
       </Router>
       <ToastContainer />

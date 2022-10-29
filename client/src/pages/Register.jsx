@@ -1,16 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { FaUser } from 'react-icons/fa'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 function Register() {
+  //for path restrictions
   const navigate = useNavigate();
+  let isFirst = true
+  useEffect(() => {
+    if(localStorage.getItem('token') && isFirst){
+      toast.success("Already Logged in!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      navigate('/')
+    }
 
-  if(localStorage.getItem('token')){
-    navigate('/')
-    return (<></>)
-  }
+    if(isFirst){
+      isFirst = false
+      return
+    } 
+  },[])
 
   const [formData, setFormData] = useState({
     name: '',
