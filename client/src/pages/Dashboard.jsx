@@ -20,11 +20,11 @@ function Dashboard() {
   //task hook
   const Task = (props) => {
     return(
-      <li key={props.id} onClick={() => {
+      <div onClick={() => {
         TodoItemDetails()
         setSelectedTask(props.id)
         editTaskRef.current.value = ""
-      }} className="bg-white w-full hover:bg-gray-200 p-4 my-1 rounded shadow-sm text-left">{props.value}</li>
+      }} className="bg-white w-full hover:bg-gray-200 p-4 my-1 rounded shadow-sm text-left">{props.value}</div>
     )
   }
   
@@ -183,7 +183,7 @@ function Dashboard() {
               <input className="w-[85%] sm:w-[87%] md:w-[90%] lg:w-[95%] h-full float-left focus:outline-none placeholder-cyan-800 ml-2 py-1 focus:placeholder-black" type="text" id="task" placeholder="Add a task" ref={inputTaskRef} onFocus={() => closeSideBar()}/>
             </form>
             <ul>
-              {tasks.map(value => { return value.task })}
+              {tasks.map(value => { return <li key={value.id}>{value.task}</li> })}
             </ul>
           </div>
           <div hidden={toggle} className={"col-span-2 xl:col-span-1 bg-white rounded py-2.5 px-2 ml-5 my-4 h-[122px] shadow-sm"}>
