@@ -109,7 +109,7 @@ function Dashboard() {
           task: <Task id={response.data._id} value={response.data.text} />,
           id: response.data._id,
           value: response.data.text,
-          date: response.data[i].createdAt
+          date: response.data.createdAt
         }])
         toast.success('Task Added!', toastStyling)
       })
@@ -123,7 +123,11 @@ function Dashboard() {
   }
 
   //for editing a task
-  const editTask = (e) => {
+  const editTask = e => {
+    if(e){
+      e.preventDefault()
+    }
+    
     let value = editTaskRef.current.value
 
     if(value !== ""){
@@ -187,9 +191,9 @@ function Dashboard() {
             </ul>
           </div>
           <div hidden={toggle} className={"col-span-2 xl:col-span-1 bg-white rounded py-2.5 px-2 ml-5 my-4 h-[122px] shadow-sm"}>
-            <div className="border-2 border-cyan-800 rounded h-16 pt-[6px] shadow-sm">
-              <input className="w-[85%] sm:w-[87%] md:w-[90%] lg:w-[95%] h-12 mx-2 float-left focus:outline-none placeholder-cyan-800 focus:placeholder-black" type="text" id="edit" placeholder={placeholder(selectedTask)} ref={editTaskRef} onBlur={() => editTask()}/>
-            </div>
+            <form className="border-2 border-cyan-800 rounded h-16 pt-[6px] shadow-sm" onSubmit={editTask}>
+              <input className="w-[85%] sm:w-[87%] md:w-[90%] lg:w-[95%] h-12 mx-2 float-left focus:outline-none placeholder-cyan-800 focus:placeholder-black" type="text" id="edit" placeholder={placeholder(selectedTask)} ref={editTaskRef} onBlur={() => editTask()} />
+            </form>
             <div className='grid grid-cols-6'>
               <button className="col-span-1 text-black h-10 text-3xl mt-1 float-left" onClick={() => closeSideBar()}><TbLayoutSidebarRightCollapse /></button>
               <p className="col-span-4 text-center mt-1 text-black text-sm sm:mt-4">{createdDate(selectedTask)}</p>
