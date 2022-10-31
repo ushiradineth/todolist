@@ -65,8 +65,10 @@ function Dashboard() {
   const navigate = useNavigate()
   let isFirst = true
   useEffect(() => {
-    if(!localStorage.getItem('token'))
+    if(!localStorage.getItem('token')){
       navigate('/login')
+      return
+    }
 
     if(isFirst){
       isFirst = false
