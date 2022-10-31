@@ -83,7 +83,7 @@ function Register() {
     <div className="bg-gray-100 flex flex-col items-center justify-center min-h-[94vh]">
       <section>
         <h1 className='text-5xl md:text-[5rem] leading-normal font-extrabold text-white-700'>
-          <div className='pl-[120px]'><FaUser /></div> Register
+          <div className='pl-[75px] md:pl-[110px]'><FaUser /></div> Register
         </h1>
       </section>
 
