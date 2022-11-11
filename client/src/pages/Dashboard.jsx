@@ -84,7 +84,7 @@ function Dashboard() {
 
   //for getting all tasks from user
   const getTasks = () => {
-    axios.get('http://localhost:8000/api/tasks', config)
+    axios.get(import.meta.env.VITE_APP_URL + 'api/tasks', config)
     .then(function (response) {
       for (let i = 0; i < response.data.length; i++) {
         if(!tasks.some(task => task.id === response.data[i]._id)){
@@ -110,7 +110,7 @@ function Dashboard() {
     let value = inputTaskRef.current.value
 
     if(value !== ""){
-      axios.post('http://localhost:8000/api/tasks', { text: value }, config)
+      axios.post(import.meta.env.VITE_APP_URL + 'api/tasks', { text: value }, config)
       .then(function (response) {
         setTasks(array => [...array, {
           task: <Task id={response.data._id} value={response.data.text} />,
@@ -138,7 +138,7 @@ function Dashboard() {
     let value = editTaskRef.current.value
 
     if(value !== ""){
-      axios.put('http://localhost:8000/api/tasks/' + selectedTask.toString(), { text: value },  config)
+      axios.put(import.meta.env.VITE_APP_URL + 'api/tasks/' + selectedTask.toString(), { text: value },  config)
       .then(function (response) {
         let editedTaskIndex = tasks.findIndex(task => task.id === response.data._id)
         tasks[editedTaskIndex].task = <Task id={response.data._id} value={response.data.text} />
@@ -157,7 +157,7 @@ function Dashboard() {
 
   //for deleting a task
   const deleteTask = () => {
-    axios.delete('http://localhost:8000/api/tasks/' + selectedTask.toString(), config)
+    axios.delete(import.meta.env.VITE_APP_URL + 'api/tasks/' + selectedTask.toString(), config)
     .then(function () {
       let deletedTaskIndex = tasks.findIndex(task => task.id === selectedTask)
       tasks.splice(deletedTaskIndex, 1)

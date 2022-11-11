@@ -57,7 +57,7 @@ function Register() {
         password
       }
 
-      axios.post('http://localhost:8000/api/users', userData)
+      axios.post(import.meta.env.VITE_APP_URL + 'api/users', userData)
       .then(function (response) {
         localStorage.setItem('token', JSON.stringify(response.data.token))
         navigate('/')

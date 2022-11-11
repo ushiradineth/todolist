@@ -1,1 +1,0 @@
-Todolist app created to learn react
