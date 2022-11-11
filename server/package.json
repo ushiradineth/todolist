@@ -12,15 +12,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5"
   },
-  "devDependencies": {
-    "concurrently": "^7.4.0",
-    "nodemon": "^2.0.20"
-  },
   "scripts": {
-    "start": "node server/server.js",
-    "server": "nodemon server/server.js",
-    "client": "npm run dev --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "node server.js",
+    "server": "node server.js",
+    "dev": "npm run server"
   },
   "author": "",
   "license": "ISC"
